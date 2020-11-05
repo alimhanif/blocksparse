@@ -1,6 +1,5 @@
 TARGET=./build
 
-python generate_kernels.py && make compile
 
 .PHONY: all compile clean
 all: compile
@@ -102,7 +101,7 @@ CU_OBJS=\
 
 $(TARGET)/blocksparse_kernels.h: src/sass/*.sass
 	mkdir -p $(shell dirname $@)
-	python generate_kernels.py
+	python generate_kernels.py && make compile
 
 blocksparse/blocksparse_ops.so: $(OBJS) $(CU_OBJS)
 	g++ $^ -shared -o $@ -L$(TF_LIB) -L$(NV_LIB) -ltensorflow_framework -lcudart -lcuda -L$(NCCL_LIB) -L$(MPI_LIB) -lnccl -lmpi
